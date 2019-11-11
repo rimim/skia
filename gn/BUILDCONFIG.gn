@@ -150,11 +150,6 @@ if (is_win) {
   assert(win_vc != "")  # Could not find VC installation. Set win_vc to your VC directory.
 }
 
-# if we are building Windows desktop, then use clang-cl
-if (is_win && !is_winrt && clang_win == "") {
-  clang_win = "$win_vc/Tools/Llvm"
-}
-
 if (is_win) {
   if (win_toolchain_version == "") {
     win_toolchain_version = exec_script("//gn/highest_version_dir.py",
