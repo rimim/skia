@@ -93,7 +93,9 @@ typedef enum {
     RGB_888X_SK_COLORTYPE,
     BGRA_8888_SK_COLORTYPE,
     RGBA_1010102_SK_COLORTYPE,
+    BGRA_1010102_SK_COLORTYPE,
     RGB_101010X_SK_COLORTYPE,
+    BGR_101010X_SK_COLORTYPE,
     GRAY_8_SK_COLORTYPE,
     RGBA_F16_NORM_SK_COLORTYPE,
     RGBA_F16_SK_COLORTYPE,
@@ -642,10 +644,11 @@ typedef struct gr_backendtexture_t gr_backendtexture_t;
 typedef struct gr_context_t gr_context_t;
 
 typedef enum {
-    METAL_GR_BACKEND,
-    DAWN_GR_BACKEND,
     OPENGL_GR_BACKEND,
     VULKAN_GR_BACKEND,
+    METAL_GR_BACKEND,
+    DIRECT3D_GR_BACKEND,
+    DAWN_GR_BACKEND,
 } gr_backend_t;
 
 typedef intptr_t gr_backendcontext_t;

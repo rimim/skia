@@ -160,7 +160,9 @@ static_assert ((int)SkColorType::kRGBA_8888_SkColorType            == (int)RGBA_
 static_assert ((int)SkColorType::kBGRA_8888_SkColorType            == (int)BGRA_8888_SK_COLORTYPE,            ASSERT_MSG(SkColorType, sk_colortype_t));
 static_assert ((int)SkColorType::kRGB_888x_SkColorType             == (int)RGB_888X_SK_COLORTYPE,             ASSERT_MSG(SkColorType, sk_colortype_t));
 static_assert ((int)SkColorType::kRGBA_1010102_SkColorType         == (int)RGBA_1010102_SK_COLORTYPE,         ASSERT_MSG(SkColorType, sk_colortype_t));
+static_assert ((int)SkColorType::kBGRA_1010102_SkColorType         == (int)BGRA_1010102_SK_COLORTYPE,         ASSERT_MSG(SkColorType, sk_colortype_t));
 static_assert ((int)SkColorType::kRGB_101010x_SkColorType          == (int)RGB_101010X_SK_COLORTYPE,          ASSERT_MSG(SkColorType, sk_colortype_t));
+static_assert ((int)SkColorType::kBGR_101010x_SkColorType          == (int)BGR_101010X_SK_COLORTYPE,          ASSERT_MSG(SkColorType, sk_colortype_t));
 static_assert ((int)SkColorType::kGray_8_SkColorType               == (int)GRAY_8_SK_COLORTYPE,               ASSERT_MSG(SkColorType, sk_colortype_t));
 static_assert ((int)SkColorType::kRGBA_F16Norm_SkColorType         == (int)RGBA_F16_NORM_SK_COLORTYPE,        ASSERT_MSG(SkColorType, sk_colortype_t));
 static_assert ((int)SkColorType::kRGBA_F16_SkColorType             == (int)RGBA_F16_SK_COLORTYPE,             ASSERT_MSG(SkColorType, sk_colortype_t));
@@ -398,10 +400,11 @@ static_assert ((int)GrSurfaceOrigin::kTopLeft_GrSurfaceOrigin      == (int)TOP_L
 static_assert ((int)GrSurfaceOrigin::kBottomLeft_GrSurfaceOrigin   == (int)BOTTOM_LEFT_GR_SURFACE_ORIGIN,   ASSERT_MSG(GrSurfaceOrigin, gr_surfaceorigin_t));
 
 // gr_backend_t
-static_assert ((int)GrBackend::kMetal    == (int)METAL_GR_BACKEND,    ASSERT_MSG(GrBackend, gr_backend_t));
-static_assert ((int)GrBackend::kDawn     == (int)DAWN_GR_BACKEND,     ASSERT_MSG(GrBackend, gr_backend_t));
-static_assert ((int)GrBackend::kOpenGL   == (int)OPENGL_GR_BACKEND,   ASSERT_MSG(GrBackend, gr_backend_t));
-static_assert ((int)GrBackend::kVulkan   == (int)VULKAN_GR_BACKEND,   ASSERT_MSG(GrBackend, gr_backend_t));
+static_assert ((int)GrBackend::kOpenGL     == (int)OPENGL_GR_BACKEND,     ASSERT_MSG(GrBackend, gr_backend_t));
+static_assert ((int)GrBackend::kVulkan     == (int)VULKAN_GR_BACKEND,     ASSERT_MSG(GrBackend, gr_backend_t));
+static_assert ((int)GrBackend::kMetal      == (int)METAL_GR_BACKEND,      ASSERT_MSG(GrBackend, gr_backend_t));
+static_assert ((int)GrBackend::kDirect3D   == (int)DIRECT3D_GR_BACKEND,   ASSERT_MSG(GrBackend, gr_backend_t));
+static_assert ((int)GrBackend::kDawn       == (int)DAWN_GR_BACKEND,       ASSERT_MSG(GrBackend, gr_backend_t));
 
 #endif
 
