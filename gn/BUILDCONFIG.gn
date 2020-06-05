@@ -114,8 +114,8 @@ if (is_android) {
     ndk_target = "aarch64-linux-android"
     ndk_gdbserver = "prebuilt/android-arm64/gdbserver/gdbserver"
   } else if (target_cpu == "arm") {
-    ndk_target = "arm-linux-androideabi"
-    ndk_gdbserver = "prebuilt/android-arm64/gdbserver/gdbserver"
+    ndk_target = "armv7a-linux-androideabi"
+    ndk_gdbserver = "prebuilt/android-arm/gdbserver/gdbserver"
   } else if (target_cpu == "x64") {
     ndk_target = "x86_64-linux-android"
     ndk_gdbserver = "prebuilt/android-x86_64/gdbserver/gdbserver"
