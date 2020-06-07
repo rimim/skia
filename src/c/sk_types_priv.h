@@ -135,6 +135,9 @@ DEF_STRUCT_MAP(GrGLInterface, gr_glinterface_t, GrGLInterface)
 DEF_STRUCT_MAP(GrVkYcbcrConversionInfo, gr_vk_ycbcrconversioninfo_t, GrVkYcbcrConversionInfo)
 DEF_STRUCT_MAP(GrVkImageInfo, gr_vk_imageinfo_t, GrVkImageInfo)
 
+#include "include/effects/SkRuntimeEffect.h"
+DEF_MAP(SkRuntimeEffect::Variable, sk_runtimeeffect_variable_t, RuntimeEffectVariable)
+
 #include "include/core/SkCanvas.h"
 DEF_MAP(SkCanvas::Lattice, sk_lattice_t, Lattice)
 

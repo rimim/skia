@@ -15,6 +15,8 @@
 
 #include "src/c/sk_types_priv.h"
 
+// sk_runtimeeffect_t
+
 sk_runtimeeffect_t* sk_runtimeeffect_make(sk_string_t* sksl, sk_string_t* error) {
     auto [effect, errorMessage] = SkRuntimeEffect::Make(AsString(*sksl));
     if (error && errorMessage.size() > 0)
@@ -64,6 +66,46 @@ sk_colorfilter_t* sk_runtimeeffect_make_color_filter(sk_runtimeeffect_t* effect,
     return ToColorFilter(shader.release());
 }
 
-size_t sk_runtimeeffect_get_input_size(sk_runtimeeffect_t* effect) {
+size_t sk_runtimeeffect_get_input_size(const sk_runtimeeffect_t* effect) {
     return AsRuntimeEffect(effect)->inputSize();
+}
+
+size_t sk_runtimeeffect_get_inputs_count(const sk_runtimeeffect_t* effect) {
+    return AsRuntimeEffect(effect)->inputs().count();
+}
+
+void sk_runtimeeffect_get_input_name(const sk_runtimeeffect_t* effect, int index, sk_string_t* name) {
+    auto vector = AsRuntimeEffect(effect)->inputs();
+    auto item = vector.begin() + index;
+    AsString(name)->set(item->fName);
+}
+
+const sk_runtimeeffect_variable_t* sk_runtimeeffect_get_input_from_index(const sk_runtimeeffect_t* effect, int index) {
+    auto vector = AsRuntimeEffect(effect)->inputs();
+    auto item = vector.begin() + index;
+    return ToRuntimeEffectVariable(&(*item));
+}
+
+const sk_runtimeeffect_variable_t* sk_runtimeeffect_get_input_from_name(const sk_runtimeeffect_t* effect, const char* name, size_t len) {
+    return ToRuntimeEffectVariable(AsRuntimeEffect(effect)->findInput(name));
+}
+
+size_t sk_runtimeeffect_get_children_count(const sk_runtimeeffect_t* effect) {
+    return AsRuntimeEffect(effect)->children().count();
+}
+
+void sk_runtimeeffect_get_child_name(const sk_runtimeeffect_t* effect, int index, sk_string_t* name) {
+    auto vector = AsRuntimeEffect(effect)->children();
+    auto item = vector.begin() + index;
+    AsString(name)->set(*item);
+}
+
+// sk_runtimeeffect_variable_t
+
+size_t sk_runtimeeffect_variable_get_offset(const sk_runtimeeffect_variable_t* variable) {
+    return AsRuntimeEffectVariable(variable)->fOffset;
+}
+
+size_t sk_runtimeeffect_variable_get_size_in_bytes(const sk_runtimeeffect_variable_t* variable) {
+    return AsRuntimeEffectVariable(variable)->sizeInBytes();
 }
