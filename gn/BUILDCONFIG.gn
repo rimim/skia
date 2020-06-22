@@ -11,6 +11,7 @@ declare_args() {
   is_official_build = false
   is_component_build = false
   is_static_skiasharp = false
+  skiasharp_suffix = ""
   ndk = ""
 
   # Android 5.0, Lollipop
@@ -207,7 +208,12 @@ template("skiasharp_build") {
     _skiasharp_mode = "static_library"
   }
 
-  target(_skiasharp_mode, target_name) {
+  if (skiasharp_suffix != "") {
+    group(target_name) {
+      deps = [ ":$target_name$skiasharp_suffix" ]
+    }
+  }
+  target(_skiasharp_mode, target_name + skiasharp_suffix) {
     forward_variables_from(invoker, "*")
   }
 }
