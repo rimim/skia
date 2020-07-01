@@ -4,11 +4,11 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+
 #include "include/core/SkTypes.h"
 #ifdef SK_BUILD_FOR_MAC
 
 #include "include/gpu/gl/GrGLInterface.h"
-
 #include "include/gpu/gl/GrGLAssembleInterface.h"
 #include "include/private/SkTemplates.h"
 
