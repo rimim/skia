@@ -14,12 +14,11 @@
 #include <dlfcn.h>
 
 sk_sp<const GrGLInterface> GrGLMakeNativeInterface() {
-    
     auto getProc = [](void* ctx, const char* name) {
         return (GrGLFuncPtr)dlsym(RTLD_DEFAULT, name);
     };
 
-    return GrGLMakeAssembledGLESInterface(nullptr, ios_get_gl_proc);
+    return GrGLMakeAssembledGLESInterface(nullptr, getProc);
 }
 
 const GrGLInterface* GrGLCreateNativeInterface() { return GrGLMakeNativeInterface().release(); }
