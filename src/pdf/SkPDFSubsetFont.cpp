@@ -82,6 +82,105 @@ static sk_sp<SkData> subset_harfbuzz(sk_sp<SkData> fontData,
 
 #endif  // defined(SK_PDF_USE_HARFBUZZ_SUBSET)
 
+    class SkFontSubsetter_harfbuzz : public SkFontSubsetter {
+    protected:
+        bool onPrepare(sk_sp<SkData> fontData, const char* fontName, int ttcIndex) override {
+    #if defined(SK_USING_THIRD_PARTY_ICU)
+            if (!SkLoadICU()) {
+                return false;
+            }
+    #endif
+            if (!fontData) {
+                return false;
+            }
+            HBFace face(hb_face_create(to_blob(std::move(fontData)).get(), ttcIndex));
+            SkASSERT(face);
+
+            HBSubsetInput input(hb_subset_input_create_or_fail());
+            SkASSERT(input);
+            if (!face || !input) {
+                return false;
+            }
+            glyphs = hb_subset_input_glyph_set(input.get());
+            return true;
+        }
+
+        void onAdd(SkUnichar* codepoints, size_t count) override {
+            for (size_t i = 0; i < count; i++) {
+                hb_set_add(glyphs, codepoints[i]);
+            }
+        }
+
+        sk_sp<SkData> onComplete() override {
+            hb_subset_input_set_retain_gids(input.get(), true);
+            // TODO: When possible, check if a font is 'tricky' with FT_IS_TRICKY.
+            // If it isn't known if a font is 'tricky', retain the hints.
+            hb_subset_input_set_drop_hints(input.get(), false);
+            HBFace subset(hb_subset(face.get(), input.get()));
+            HBBlob result(hb_face_reference_blob(subset.get()));
+            return to_data(std::move(result));
+        }
+
+    private:
+        hb_set_t* glyphs;
+    };
+
+
+class SkFontSubsetter_sfntly : public SkFontSubsetter {
+protected:
+    bool onPrepare(sk_sp<SkData> fontData, const char* fontName, int ttcIndex) override {
+#if defined(SK_USING_THIRD_PARTY_ICU)
+        if (!SkLoadICU()) {
+            return false;
+        }
+#endif
+        fFontName = fontName;
+        return true;
+    }
+
+    void onAdd(SkUnichar* codepoints, size_t count) override {
+        // Generate glyph id array in format needed by sfntly.
+        // TODO(halcanary): sfntly should take a more compact format.
+        for (size_t i = 0; i < count; i++) {
+            subset.push_back(codepoints[i]);
+        }
+    }
+
+    sk_sp<SkData> onComplete() override {
+        unsigned char* subsetFont{nullptr};
+#if defined(SK_BUILD_FOR_GOOGLE3)
+        // TODO(halcanary): update SK_BUILD_FOR_GOOGLE3 to newest version of Sfntly.
+        (void)ttcIndex;
+        int subsetFontSize = SfntlyWrapper::SubsetFont(fontName,
+                                                      fontData->bytes(),
+                                                      fontData->size(),
+                                                      subset.data(),
+                                                      subset.size(),
+                                                      &subsetFont);
+#else  // defined(SK_BUILD_FOR_GOOGLE3)
+        (void)fontName;
+        int subsetFontSize = SfntlyWrapper::SubsetFont(ttcIndex,
+                                                       fontData->bytes(),
+                                                       fontData->size(),
+                                                       subset.data(),
+                                                       subset.size(),
+                                                       &subsetFont);
+#endif  // defined(SK_BUILD_FOR_GOOGLE3)
+        SkASSERT(subsetFontSize > 0 || subsetFont == nullptr);
+        if (subsetFontSize < 1 || subsetFont == nullptr) {
+            return nullptr;
+        }
+        return SkData::MakeWithProc(subsetFont, subsetFontSize,
+                                    [](const void* p, void*) { delete[] (unsigned char*)p; },
+                                    nullptr);
+    }
+
+private:
+    std::vector<unsigned> subset;
+    const char* fFontName;
+};
+
+
 ////////////////////////////////////////////////////////////////////////////////
 
 #if defined(SK_PDF_USE_SFNTLY)

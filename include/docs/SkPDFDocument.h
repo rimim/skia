@@ -9,6 +9,7 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTime.h"
+#include "include/docs/SkFontSubsetter.h"
 
 #define SKPDF_STRING(X) SKPDF_STRING_IMPL(X)
 #define SKPDF_STRING_IMPL(X) #X
@@ -173,6 +174,8 @@ struct Metadata {
         kHarfbuzz_Subsetter,
         kSfntly_Subsetter,
     } fSubsetter = kHarfbuzz_Subsetter;
+
+    sk_sp<SkFontSubsetter> fFontSubsetter = nullptr;
 };
 
 /** Associate a node ID with subsequent drawing commands in an

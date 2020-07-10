@@ -309,10 +309,18 @@ static void emit_subset_type0(const SkPDFFont& font, SkPDFDocument* doc) {
                 if (!SkToBool(metrics.fFlags &
                               SkAdvancedTypefaceMetrics::kNotSubsettable_FontFlag)) {
                     SkASSERT(font.firstGlyphID() == 1);
-                    sk_sp<SkData> subsetFontData = SkPDFSubsetFont(
+                    sk_sp<SkData> subsetFontData;
+                    sk_sp<SkFontSubsetter> subsetter = doc->metadata().fFontSubsetter;
+                    if (subsetter) {
+                        subsetter->prepare(stream_to_data(std::move(fontAsset)), metrics.fFontName.c_str(), ttcIndex);
+                        font.glyphUsage().getSetValues([subsetter](unsigned v) { subsetter->add(v); });
+                        subsetFontData = subsetter->complete();
+                    } else {
+                        subsetFontData = SkPDFSubsetFont(
                             stream_to_data(std::move(fontAsset)), font.glyphUsage(),
                             doc->metadata().fSubsetter,
                             metrics.fFontName.c_str(), ttcIndex);
+                    }
                     if (subsetFontData) {
                         std::unique_ptr<SkPDFDict> tmp = SkPDFMakeDict();
                         tmp->insertInt("Length1", SkToInt(subsetFontData->size()));
