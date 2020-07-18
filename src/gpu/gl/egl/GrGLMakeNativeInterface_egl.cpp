@@ -14,6 +14,10 @@
 #endif
 #include <GLES2/gl2.h>
 
+#if SK_EMSCRIPTEN
+#include <emscripten/html5.h>
+#endif
+
 static GrGLFuncPtr egl_get_gl_proc(void* ctx, const char name[]) {
     SkASSERT(nullptr == ctx);
     // https://www.khronos.org/registry/EGL/extensions/KHR/EGL_KHR_get_all_proc_addresses.txt
@@ -131,7 +135,11 @@ static GrGLFuncPtr egl_get_gl_proc(void* ctx, const char name[]) {
 }
 
 sk_sp<const GrGLInterface> GrGLMakeNativeInterface() {
+#if SK_EMSCRIPTEN
+    if (!emscripten_webgl_get_current_context())
+#else
     if (!eglGetCurrentContext())
+#endif
         return nullptr;
     return GrGLMakeAssembledInterface(nullptr, egl_get_gl_proc);
 }

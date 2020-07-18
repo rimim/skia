@@ -84,6 +84,13 @@ SK_C_API gr_backend_t gr_backendrendertarget_get_backend(const gr_backendrendert
 SK_C_API bool gr_backendrendertarget_get_gl_framebufferinfo(const gr_backendrendertarget_t* rendertarget, gr_gl_framebufferinfo_t* glInfo);
 
 
+//  Emscripten
+
+gr_emscripten_result_t gr_emscripten_webgl_make_context_current(gr_emscripten_webgl_context_handle_t context);
+gr_emscripten_webgl_context_handle_t gr_emscripten_webgl_get_current_context(void);
+void* gr_emscripten_webgl_get_proc_address(const char *name);
+
+
 SK_C_PLUS_PLUS_END_GUARD
 
 #endif

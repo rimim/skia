@@ -7,37 +7,14 @@
  * found in the LICENSE file.
  */
 
-#include "include/core/SkTypes.h" // required to make sure SK_SUPPORT_GPU is defined
-
-#define SK_SKIP_ARG__(keep, skip, ...) skip
-#define SK_SKIP_ARG_(args) SK_SKIP_ARG__ args
-#define SK_SKIP_ARG(...) SK_SKIP_ARG_((__VA_ARGS__, ))
-
-#define SK_FIRST_ARG__(keep, skip, ...) keep
-#define SK_FIRST_ARG_(args) SK_FIRST_ARG__ args
-#define SK_FIRST_ARG(...) SK_FIRST_ARG_((__VA_ARGS__, ))
-
-#if SK_SUPPORT_GPU
-#    include "include/gpu/GrContext.h"
-#    include "include/gpu/GrBackendSurface.h"
-#    include "include/gpu/gl/GrGLInterface.h"
-#    include "include/gpu/gl/GrGLAssembleInterface.h"
-#    define SK_ONLY_GPU(...) SK_FIRST_ARG(__VA_ARGS__)
-#    if SK_VULKAN
-#        include "include/gpu/vk/GrVkBackendContext.h"
-#        include "include/gpu/vk/GrVkExtensions.h"
-#        define SK_ONLY_VULKAN(...) SK_FIRST_ARG(__VA_ARGS__)
-#    else
-#        define SK_ONLY_VULKAN(...) SK_SKIP_ARG(__VA_ARGS__)
-#    endif
-#else // !SK_SUPPORT_GPU
-#    define SK_ONLY_GPU(...) SK_SKIP_ARG(__VA_ARGS__)
-#    define SK_ONLY_VULKAN(...) SK_SKIP_ARG(__VA_ARGS__)
-#endif // SK_SUPPORT_GPU
-
 #include "include/c/gr_context.h"
 
 #include "src/c/sk_types_priv.h"
+
+#ifdef SK_EMSCRIPTEN
+#include <emscripten/html5.h>
+#endif
+
 
 // GrContext
 
@@ -228,4 +205,19 @@ gr_backend_t gr_backendrendertarget_get_backend(const gr_backendrendertarget_t* 
 
 bool gr_backendrendertarget_get_gl_framebufferinfo(const gr_backendrendertarget_t* rendertarget, gr_gl_framebufferinfo_t* glInfo) {
     return SK_ONLY_GPU(AsGrBackendRenderTarget(rendertarget)->getGLFramebufferInfo(AsGrGLFramebufferInfo(glInfo)), false);
+}
+
+
+// Emscripten
+
+gr_emscripten_result_t gr_emscripten_webgl_make_context_current(gr_emscripten_webgl_context_handle_t context) {
+    return SK_ONLY_EMSCRIPTEN(emscripten_webgl_make_context_current(context), -1);
+}
+
+gr_emscripten_webgl_context_handle_t gr_emscripten_webgl_get_current_context(void) {
+    return SK_ONLY_EMSCRIPTEN(emscripten_webgl_get_current_context(), 0);
+}
+
+void* gr_emscripten_webgl_get_proc_address(const char *name) {
+    return SK_ONLY_EMSCRIPTEN(emscripten_webgl_get_proc_address(name), nullptr);
 }

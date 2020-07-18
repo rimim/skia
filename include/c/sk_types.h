@@ -990,6 +990,9 @@ typedef struct {
     float fTY;
 } sk_rsxform_t;
 
+typedef int gr_emscripten_result_t;
+typedef int gr_emscripten_webgl_context_handle_t;
+
 SK_C_PLUS_PLUS_END_GUARD
 
 #endif
