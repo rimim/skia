@@ -996,6 +996,8 @@ typedef struct {
 typedef struct sk_runtimeeffect_t sk_runtimeeffect_t;
 typedef struct sk_runtimeeffect_variable_t sk_runtimeeffect_variable_t;
 
+typedef struct sk_tracememorydump_t sk_tracememorydump_t;
+
 SK_C_PLUS_PLUS_END_GUARD
 
 #endif
