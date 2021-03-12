@@ -1011,12 +1011,6 @@ typedef struct sk_tracememorydump_t sk_tracememorydump_t;
 typedef struct sk_runtimeeffect_t sk_runtimeeffect_t;
 typedef struct sk_runtimeeffect_uniform_t sk_runtimeeffect_uniform_t;
 
-typedef enum sk_surface_backend_handle_access_t {
-    FLUSH_READ_SK_SURFACE_BACKEND_HANDLE_ACCESS,
-    FLUSH_WRITE_SK_SURFACE_BACKEND_HANDLE_ACCESS,
-    DISCARD_WRITE_SK_SURFACE_BACKEND_HANDLE_ACCESS,
-} sk_surface_backend_handle_access_t;
-
 SK_C_PLUS_PLUS_END_GUARD
 
 #endif

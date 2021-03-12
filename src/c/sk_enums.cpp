@@ -371,11 +371,6 @@ static_assert ((int)SkRRect::Corner::kUpperRight_Corner   == (int)UPPER_RIGHT_SK
 static_assert ((int)SkRRect::Corner::kLowerRight_Corner   == (int)LOWER_RIGHT_SK_RRECT_CORNER,   ASSERT_MSG(SkRRect::Corner, sk_rrect_corner_t));
 static_assert ((int)SkRRect::Corner::kLowerLeft_Corner    == (int)LOWER_LEFT_SK_RRECT_CORNER,    ASSERT_MSG(SkRRect::Corner, sk_rrect_corner_t));
 
-// sk_surface_backend_handle_access_t
-static_assert ((int)SkSurface::BackendHandleAccess::kFlushRead_BackendHandleAccess      == (int)FLUSH_READ_SK_SURFACE_BACKEND_HANDLE_ACCESS,      ASSERT_MSG(SkSurface::BackendHandleAccess, sk_surface_backend_handle_access_t));
-static_assert ((int)SkSurface::BackendHandleAccess::kFlushWrite_BackendHandleAccess     == (int)FLUSH_WRITE_SK_SURFACE_BACKEND_HANDLE_ACCESS,     ASSERT_MSG(SkSurface::BackendHandleAccess, sk_surface_backend_handle_access_t));
-static_assert ((int)SkSurface::BackendHandleAccess::kDiscardWrite_BackendHandleAccess   == (int)DISCARD_WRITE_SK_SURFACE_BACKEND_HANDLE_ACCESS,   ASSERT_MSG(SkSurface::BackendHandleAccess, sk_surface_backend_handle_access_t));
-
 #if SK_SUPPORT_GPU
 
 // gr_surfaceorigin_t
