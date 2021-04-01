@@ -28,7 +28,7 @@ declare_args() {
   visibility_hidden = true
 }
 
-if (is_ios && xcode_sysroot == "") {
+if (is_ios && !is_maccatalyst && xcode_sysroot == "") {
   if (is_tvos) {
     sdk = "appletv"
   } else if (is_watchos) {
@@ -48,7 +48,7 @@ if (is_ios && xcode_sysroot == "") {
 # shipped with chrome can find them. When the gn_to_bp.py tool is run, then the host_os != mac.
 # In this case leave the xcode_sysroot empty, and the cc/c++ that come with XCode will be able to
 # find needed include paths.
-if (is_mac && host_os == "mac" && xcode_sysroot == "") {
+if ((is_mac || is_maccatalyst) && host_os == "mac" && xcode_sysroot == "") {
   xcode_sysroot =
       exec_script("find_xcode_sysroot.py", [ "macosx" ], "trim string")
 }
@@ -108,6 +108,16 @@ config("default") {
       "WIN32_LEAN_AND_MEAN",
       "NOMINMAX",
     ]
+    if (is_winrt) {
+      defines += [
+        "WINAPI_FAMILY=WINAPI_FAMILY_APP",
+        "SK_BUILD_FOR_WINRT",
+      ]
+      ldflags += [
+        "/APPCONTAINER",
+        "WindowsApp.lib",
+      ]
+    }
 
     _include_dirs = [
       "$win_vc/Tools/MSVC/$win_toolchain_version/include",
@@ -225,6 +235,7 @@ config("default") {
   }
 
   if (is_tizen) {
+    defines += [ "SK_BUILD_FOR_TIZEN" ]
     asmflags += [
       "--target=$ncli_target",
       "-B$ncli/tools/$ncli_gccdir/$ncli_target/bin",
@@ -287,6 +298,28 @@ config("default") {
       _target,
       "-stdlib=libc++",
     ]
+    if (is_watchos) {
+      defines += [ "SK_BUILD_FOR_WATCHOS" ]
+      cflags += [ "-mwatchos-version-min=$min_watchos_version" ]
+      ldflags += [ "-Wl,watchos_version_min=$min_watchos_version" ]
+    } else if (is_tvos) {
+      defines += [ "SK_BUILD_FOR_TVOS" ]
+      cflags += [ "-mtvos-version-min=$min_tvos_version" ]
+      ldflags += [ "-Wl,tvos_version_min=$min_tvos_version" ]
+    } else if (is_maccatalyst) {
+      defines += [ "SK_BUILD_FOR_MACCATALYST" ]
+      cflags += [
+        "-target", "$_target-apple-ios$min_maccatalyst_version-macabi",
+        "-iframework", "$xcode_sysroot/System/iOSSupport/System/Library/Frameworks",
+      ]
+      ldflags += [
+        "-target", "$_target-apple-ios$min_maccatalyst_version-macabi",
+        "-iframework", "$xcode_sysroot/System/iOSSupport/System/Library/Frameworks",
+      ]
+    } else {
+      cflags += [ "-mios-version-min=$min_ios_version" ]
+      ldflags += [ "-Wl,ios_version_min=$min_ios_version" ]
+    }
     libs += [ "objc" ]
   }
 
@@ -314,10 +347,12 @@ config("default") {
       cflags += [
         "-isysroot",
         xcode_sysroot,
+        "-mmacosx-version-min=$min_macos_version",
       ]
       ldflags += [
         "-isysroot",
         xcode_sysroot,
+        "-Wl,macosx_version_min=$min_macos_version",
       ]
     }
 
@@ -327,6 +362,10 @@ config("default") {
     #     /System/Library/Frameworks/foo.framework/foo are out of sync.
     #     Falling back to library file for linking.
     ldflags += [ "-Wl,-w" ]
+  }
+
+  if (target_cpu == "wasm") {
+    defines += [ "SK_BUILD_FOR_WASM" ]
   }
 
   if (sanitize != "" && sanitize != "MSVC") {
