@@ -326,6 +326,11 @@ config("default") {
       ldflags += [ "-Wl,tvos_version_min=$min_tvos_version" ]
     } else if (is_maccatalyst) {
       defines += [ "SK_BUILD_FOR_MACCATALYST" ]
+      if (target_cpu == "x64") {
+        _target = "x86_64"
+      } else if (target_cpu == "arm64") {
+        _target = "arm64"
+      }
       cflags += [
         "-target", "$_target-apple-ios$min_maccatalyst_version-macabi",
         "-iframework", "$xcode_sysroot/System/iOSSupport/System/Library/Frameworks",
