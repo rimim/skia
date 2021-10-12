@@ -67,6 +67,10 @@ gr_direct_context_t* gr_direct_context_make_metal_with_options(void* device, voi
     return SK_ONLY_METAL(ToGrDirectContext(GrDirectContext::MakeMetal(device, queue, opts).release()), nullptr);
 }
 
+bool gr_direct_context_is_abandoned(gr_direct_context_t* context) {
+    return SK_ONLY_GPU(AsGrDirectContext(context)->abandoned(), true);
+}
+
 void gr_direct_context_abandon_context(gr_direct_context_t* context) {
     SK_ONLY_GPU(AsGrDirectContext(context)->abandonContext());
 }
