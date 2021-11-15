@@ -81,6 +81,10 @@ void sk_canvas_get_total_matrix(sk_canvas_t* ccanvas, sk_matrix_t* cmatrix) {
     *cmatrix = ToMatrix(AsCanvas(ccanvas)->getTotalMatrix());
 }
 
+void sk_canvas_get_total_matrix_m44(sk_canvas_t* ccanvas, sk_m44_t* cmatrix) {
+    *cmatrix = ToM44(AsCanvas(ccanvas)->getLocalToDevice());
+}
+
 void sk_canvas_draw_round_rect(sk_canvas_t* ccanvas, const sk_rect_t* crect, float rx, float ry, const sk_paint_t* cpaint) {
     AsCanvas(ccanvas)->drawRoundRect(*AsRect(crect), rx, ry, *AsPaint(cpaint));
 }
@@ -139,6 +143,10 @@ void sk_canvas_skew(sk_canvas_t* ccanvas, float sx, float sy) {
 
 void sk_canvas_concat(sk_canvas_t* ccanvas, const sk_matrix_t* cmatrix) {
     AsCanvas(ccanvas)->concat(AsMatrix(cmatrix));
+}
+
+void sk_canvas_concat_m44(sk_canvas_t* ccanvas, const sk_m44_t* cmatrix) {
+    AsCanvas(ccanvas)->concat(AsM44(cmatrix));
 }
 
 bool sk_canvas_quick_reject(sk_canvas_t* ccanvas, const sk_rect_t* crect) {

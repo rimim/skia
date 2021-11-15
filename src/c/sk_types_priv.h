@@ -247,6 +247,35 @@ static inline sk_matrix_t ToMatrix(const SkMatrix& matrix) {
     return m;
 }
 
+#include "include/core/SkM44.h"
+static inline SkM44 AsM44(const sk_m44_t* matrix) {
+    return SkM44(
+        matrix->m11, matrix->m21,  matrix->m31,  matrix->m41,
+        matrix->m12, matrix->m22,  matrix->m32,  matrix->m42,
+        matrix->m13, matrix->m23,  matrix->m33,  matrix->m43,
+        matrix->m14, matrix->m24,  matrix->m34,  matrix->m44);
+}
+static inline sk_m44_t ToM44(const SkM44* matrix) {
+    float mat[16];
+    matrix->getColMajor(mat);
+    return sk_m44_t {
+        mat[0],  mat[1],  mat[2],  mat[3],
+        mat[4],  mat[5],  mat[6],  mat[7],
+        mat[8],  mat[9],  mat[10], mat[11],
+        mat[12], mat[13], mat[14], mat[15],
+    };
+}
+static inline sk_m44_t ToM44(const SkM44& matrix) {
+    float mat[16];
+    matrix.getColMajor(mat);
+    return sk_m44_t {
+        mat[0],  mat[1],  mat[2],  mat[3],
+        mat[4],  mat[5],  mat[6],  mat[7],
+        mat[8],  mat[9],  mat[10], mat[11],
+        mat[12], mat[13], mat[14], mat[15],
+    };
+}
+
 #include "include/core/SkImageInfo.h"
 static inline SkImageInfo AsImageInfo(const sk_imageinfo_t* info) {
     return SkImageInfo::Make(

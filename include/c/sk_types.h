@@ -168,6 +168,13 @@ typedef struct {
     float persp0, persp1, persp2;
 } sk_matrix_t;
 
+typedef struct {
+    float m11, m12, m13, m14;
+    float m21, m22, m23, m24;
+    float m31, m32, m33, m34;
+    float m41, m42, m43, m44;
+} sk_m44_t;
+
 typedef struct sk_matrix44_t sk_matrix44_t;
 
 typedef enum {

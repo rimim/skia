@@ -24,6 +24,7 @@ SK_C_API void sk_canvas_rotate_degrees(sk_canvas_t*, float degrees);
 SK_C_API void sk_canvas_rotate_radians(sk_canvas_t*, float radians);
 SK_C_API void sk_canvas_skew(sk_canvas_t*, float sx, float sy);
 SK_C_API void sk_canvas_concat(sk_canvas_t*, const sk_matrix_t*);
+SK_C_API void sk_canvas_concat_m44(sk_canvas_t*, const sk_m44_t*);
 SK_C_API bool sk_canvas_quick_reject(sk_canvas_t*, const sk_rect_t*);
 SK_C_API void sk_canvas_clip_region(sk_canvas_t* canvas, const sk_region_t* region, sk_clipop_t op);
 SK_C_API void sk_canvas_draw_paint(sk_canvas_t*, const sk_paint_t*);
@@ -52,6 +53,7 @@ SK_C_API void sk_canvas_draw_text_blob (sk_canvas_t*, sk_textblob_t* text, float
 SK_C_API void sk_canvas_reset_matrix(sk_canvas_t* ccanvas);
 SK_C_API void sk_canvas_set_matrix(sk_canvas_t* ccanvas, const sk_matrix_t* matrix);
 SK_C_API void sk_canvas_get_total_matrix(sk_canvas_t* ccanvas, sk_matrix_t* matrix);
+SK_C_API void sk_canvas_get_total_matrix_m44(sk_canvas_t* ccanvas, sk_m44_t* matrix);
 SK_C_API void sk_canvas_draw_round_rect(sk_canvas_t*, const sk_rect_t*, float rx, float ry, const sk_paint_t*);
 SK_C_API void sk_canvas_clip_rect_with_operation(sk_canvas_t* t, const sk_rect_t* crect, sk_clipop_t op, bool doAA);
 SK_C_API void sk_canvas_clip_path_with_operation(sk_canvas_t* t, const sk_path_t* crect, sk_clipop_t op, bool doAA);
