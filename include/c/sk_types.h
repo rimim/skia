@@ -906,15 +906,9 @@ typedef struct sk_colorspace_primaries_t {
 } sk_colorspace_primaries_t;
 
 typedef struct sk_colorspace_xyz_t {
-    float fM00;
-    float fM01;
-    float fM02;
-    float fM10;
-    float fM11;
-    float fM12;
-    float fM20;
-    float fM21;
-    float fM22;
+    float m11, m12, m13;
+    float m21, m22, m23;
+    float m31, m32, m33;
 } sk_colorspace_xyz_t;
 
 typedef struct sk_colorspace_icc_profile_t sk_colorspace_icc_profile_t;
