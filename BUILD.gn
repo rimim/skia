@@ -3074,6 +3074,7 @@ if (is_ios && skia_enable_skottie && !skia_enable_flutter_defines) {
   }
 }
 
+if (target_cpu != "wasm") {
 # SkiaSharp + HarfBuzzSharp
 
 skiasharp_build("SkiaSharp") {
@@ -3126,6 +3127,12 @@ skiasharp_build("HarfBuzzSharp") {
     "HAVE_SYSCONF",
     "HAVE_UNISTD_H"
   ]
+
+  if (target_cpu != "wasm") {
+    defines += [ "HAVE_MMAP" ]
+  } else {
+    defines += [ "HB_LEAN" ]
+  }
 
   _src = "third_party/externals/harfbuzz/src"
   sources = [
