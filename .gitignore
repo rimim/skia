@@ -1,6 +1,7 @@
 *.pyc
 *.swp
 *.iml
+*.tmp
 .DS_Store
 .android_config
 .gclient*
