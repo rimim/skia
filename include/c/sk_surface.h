@@ -39,6 +39,9 @@ SK_C_API void sk_surface_flush(sk_surface_t* surface);
 SK_C_API void sk_surface_flush_and_submit(sk_surface_t* surface, bool syncCpu);
 SK_C_API gr_recording_context_t* sk_surface_get_recording_context(sk_surface_t* surface);
 
+SK_C_API int sk_surface_get_width(sk_surface_t* surface);
+SK_C_API int sk_surface_get_height(sk_surface_t* surface);
+
 // surface props
 
 SK_C_API sk_surfaceprops_t* sk_surfaceprops_new(uint32_t flags, sk_pixelgeometry_t geometry);
